@@ -22,7 +22,7 @@
 #ifndef ADAFRUIT_VL53L0X_H
 #define ADAFRUIT_VL53L0X_H
 
-#if (ARDUINO >= 100)
+#if (ARDUINO >= 100) || defined(EPOXY_DUINO)
 #include "Arduino.h"
 #else
 #include "WProgram.h"
@@ -33,12 +33,12 @@
 
 #define VL53L0X_I2C_ADDR 0x29 ///< Default sensor I2C address
 
-/**************************************************************************/
-/*!
-    @brief  Class that stores state and functions for interacting with VL53L0X
-   time-of-flight sensor chips
-*/
-/**************************************************************************/
+ /**************************************************************************/
+ /*!
+     @brief  Class that stores state and functions for interacting with VL53L0X
+    time-of-flight sensor chips
+ */
+ /**************************************************************************/
 class Adafruit_VL53L0X {
 public:
   /** Sensor configurations */
@@ -50,8 +50,8 @@ public:
   } VL53L0X_Sense_config_t;
 
   boolean begin(uint8_t i2c_addr = VL53L0X_I2C_ADDR, boolean debug = false,
-                TwoWire *i2c = &Wire,
-                VL53L0X_Sense_config_t vl_config = VL53L0X_SENSE_DEFAULT);
+    TwoWire* i2c = &Wire,
+    VL53L0X_Sense_config_t vl_config = VL53L0X_SENSE_DEFAULT);
   boolean setAddress(uint8_t newAddr);
 
   // uint8_t getAddress(void); // not currently implemented
@@ -67,51 +67,51 @@ public:
   */
   /**************************************************************************/
   VL53L0X_Error
-  rangingTest(VL53L0X_RangingMeasurementData_t *pRangingMeasurementData,
-              boolean debug = false) {
+    rangingTest(VL53L0X_RangingMeasurementData_t* pRangingMeasurementData,
+      boolean debug = false) {
     return getSingleRangingMeasurement(pRangingMeasurementData, debug);
   };
 
   VL53L0X_Error getSingleRangingMeasurement(
-      VL53L0X_RangingMeasurementData_t *pRangingMeasurementData,
-      boolean debug = false);
+    VL53L0X_RangingMeasurementData_t* pRangingMeasurementData,
+    boolean debug = false);
   void
-  printRangeStatus(VL53L0X_RangingMeasurementData_t *pRangingMeasurementData);
+    printRangeStatus(VL53L0X_RangingMeasurementData_t* pRangingMeasurementData);
 
   VL53L0X_Error getRangingMeasurement(
-      VL53L0X_RangingMeasurementData_t *pRangingMeasurementData,
-      boolean debug = false);
+    VL53L0X_RangingMeasurementData_t* pRangingMeasurementData,
+    boolean debug = false);
   VL53L0X_Error startMeasurement(boolean debug = false);
   VL53L0X_Error stopMeasurement(boolean debug = false);
   VL53L0X_Error getLimitCheckCurrent(uint8_t LimitCheckId,
-                                     FixPoint1616_t *pLimitCheckCurrent,
-                                     boolean debug = false);
-  VL53L0X_Error getDeviceMode(VL53L0X_DeviceModes *pDeviceMode,
-                              boolean debug = false);
+    FixPoint1616_t* pLimitCheckCurrent,
+    boolean debug = false);
+  VL53L0X_Error getDeviceMode(VL53L0X_DeviceModes* pDeviceMode,
+    boolean debug = false);
   VL53L0X_Error setDeviceMode(VL53L0X_DeviceModes DeviceMode,
-                              boolean debug = false);
+    boolean debug = false);
 
   VL53L0X_Error setInterruptThresholds(FixPoint1616_t ThresholdLow,
-                                       FixPoint1616_t ThresholdHigh,
-                                       boolean debug = false);
-  VL53L0X_Error getInterruptThresholds(FixPoint1616_t *pThresholdLow,
-                                       FixPoint1616_t *pThresholdHigh,
-                                       boolean debug = false);
+    FixPoint1616_t ThresholdHigh,
+    boolean debug = false);
+  VL53L0X_Error getInterruptThresholds(FixPoint1616_t* pThresholdLow,
+    FixPoint1616_t* pThresholdHigh,
+    boolean debug = false);
   VL53L0X_Error clearInterruptMask(boolean debug = false);
 
-  VL53L0X_Error getGpioConfig(VL53L0X_DeviceModes *pDeviceMode,
-                              VL53L0X_GpioFunctionality *pFunctionality,
-                              VL53L0X_InterruptPolarity *pPolarity,
-                              boolean debug = false);
+  VL53L0X_Error getGpioConfig(VL53L0X_DeviceModes* pDeviceMode,
+    VL53L0X_GpioFunctionality* pFunctionality,
+    VL53L0X_InterruptPolarity* pPolarity,
+    boolean debug = false);
   VL53L0X_Error setGpioConfig(VL53L0X_DeviceModes DeviceMode,
-                              VL53L0X_GpioFunctionality Functionality,
-                              VL53L0X_InterruptPolarity Polarity,
-                              boolean debug = false);
+    VL53L0X_GpioFunctionality Functionality,
+    VL53L0X_InterruptPolarity Polarity,
+    boolean debug = false);
 
   VL53L0X_Error Status =
-      VL53L0X_ERROR_NONE; ///< indicates whether or not the sensor has
-                          ///< encountered an error
-  // Add similar methods as Adafruit_VL6180X class adapted to range of device
+    VL53L0X_ERROR_NONE; ///< indicates whether or not the sensor has
+  ///< encountered an error
+// Add similar methods as Adafruit_VL6180X class adapted to range of device
   uint16_t readRange(void);
   // float readLux(uint8_t gain);
   uint8_t readRangeStatus(void);
@@ -143,19 +143,19 @@ public:
   uint32_t getMeasurementTimingBudgetMicroSeconds(void);
 
   boolean setVcselPulsePeriod(VL53L0X_VcselPeriod VcselPeriodType,
-                              uint8_t VCSELPulsePeriod);
+    uint8_t VCSELPulsePeriod);
 
   uint8_t getVcselPulsePeriod(VL53L0X_VcselPeriod VcselPeriodType);
 
   boolean setLimitCheckEnable(uint16_t LimitCheckId, uint8_t LimitCheckEnable);
   uint8_t getLimitCheckEnable(uint16_t LimitCheckId);
   boolean setLimitCheckValue(uint16_t LimitCheckId,
-                             FixPoint1616_t LimitCheckValue);
+    FixPoint1616_t LimitCheckValue);
   FixPoint1616_t getLimitCheckValue(uint16_t LimitCheckId);
 
 private:
   VL53L0X_Dev_t MyDevice;
-  VL53L0X_Dev_t *pMyDevice = &MyDevice;
+  VL53L0X_Dev_t* pMyDevice = &MyDevice;
   VL53L0X_DeviceInfo_t DeviceInfo;
 
   uint8_t _rangeStatus;
