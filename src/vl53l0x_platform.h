@@ -65,6 +65,7 @@ typedef struct {
   uint16_t comms_speed_khz; /*!< Comms speed [kHz] : typically 400kHz for I2C */
 
   TwoWire *i2c;
+  SoftI2C* i2cSoft;
 
 } VL53L0X_Dev_t;
 

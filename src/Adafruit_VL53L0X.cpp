@@ -67,7 +67,9 @@ boolean Adafruit_VL53L0X::begin(uint8_t i2c_addr, boolean debug, TwoWire *i2c,
   pMyDevice->comms_speed_khz = 400;
   pMyDevice->i2c = i2c;
 
-  pMyDevice->i2c->begin(); // VL53L0X_i2c_init();
+  if (pMyDevice->i2c != nullptr){
+    pMyDevice->i2c->begin(); // VL53L0X_i2c_init();
+  }
 
   // unclear if this is even needed:
   if (VL53L0X_IMPLEMENTATION_VER_MAJOR != VERSION_REQUIRED_MAJOR ||

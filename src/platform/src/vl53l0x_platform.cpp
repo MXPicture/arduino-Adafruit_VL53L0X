@@ -123,8 +123,13 @@ VL53L0X_Error VL53L0X_WriteMulti(VL53L0X_DEV Dev, uint8_t index, uint8_t *pdata,
 
   deviceAddress = Dev->I2cDevAddr;
 
-  status_int =
-      VL53L0X_write_multi(deviceAddress, index, pdata, count, Dev->i2c);
+  if (Dev->i2c != nullptr){
+    status_int =
+        VL53L0X_write_multi(deviceAddress, index, pdata, count, Dev->i2c);
+  } else if (Dev->i2cSoft != nullptr){
+    status_int =
+        VL53L0X_SoftWire_write_multi(deviceAddress, index, pdata, count, Dev->i2cSoft);
+  }
 
   if (status_int != 0)
     Status = VL53L0X_ERROR_CONTROL_INTERFACE;
@@ -146,7 +151,11 @@ VL53L0X_Error VL53L0X_ReadMulti(VL53L0X_DEV Dev, uint8_t index, uint8_t *pdata,
 
   deviceAddress = Dev->I2cDevAddr;
 
-  status_int = VL53L0X_read_multi(deviceAddress, index, pdata, count, Dev->i2c);
+  if (Dev->i2c != nullptr){
+    status_int = VL53L0X_read_multi(deviceAddress, index, pdata, count, Dev->i2c);
+  } else if (Dev->i2cSoft != nullptr){
+    status_int = VL53L0X_SoftWire_read_multi(deviceAddress, index, pdata, count, Dev->i2cSoft);
+  }
 
   if (status_int != 0)
     Status = VL53L0X_ERROR_CONTROL_INTERFACE;
@@ -161,7 +170,11 @@ VL53L0X_Error VL53L0X_WrByte(VL53L0X_DEV Dev, uint8_t index, uint8_t data) {
 
   deviceAddress = Dev->I2cDevAddr;
 
-  status_int = VL53L0X_write_byte(deviceAddress, index, data, Dev->i2c);
+  if (Dev->i2c != nullptr){
+    status_int = VL53L0X_write_byte(deviceAddress, index, data, Dev->i2c);
+  } else if (Dev->i2cSoft != nullptr){
+    status_int = VL53L0X_SoftWire_write_byte(deviceAddress, index, data, Dev->i2cSoft);
+  }
 
   if (status_int != 0)
     Status = VL53L0X_ERROR_CONTROL_INTERFACE;
@@ -176,7 +189,11 @@ VL53L0X_Error VL53L0X_WrWord(VL53L0X_DEV Dev, uint8_t index, uint16_t data) {
 
   deviceAddress = Dev->I2cDevAddr;
 
-  status_int = VL53L0X_write_word(deviceAddress, index, data, Dev->i2c);
+  if (Dev->i2c != nullptr){
+    status_int = VL53L0X_write_word(deviceAddress, index, data, Dev->i2c);
+  } else if (Dev->i2cSoft != nullptr){
+    status_int = VL53L0X_SoftWire_write_word(deviceAddress, index, data, Dev->i2cSoft);
+  }
 
   if (status_int != 0)
     Status = VL53L0X_ERROR_CONTROL_INTERFACE;
@@ -191,7 +208,11 @@ VL53L0X_Error VL53L0X_WrDWord(VL53L0X_DEV Dev, uint8_t index, uint32_t data) {
 
   deviceAddress = Dev->I2cDevAddr;
 
-  status_int = VL53L0X_write_dword(deviceAddress, index, data, Dev->i2c);
+  if (Dev->i2c != nullptr){
+    status_int = VL53L0X_write_dword(deviceAddress, index, data, Dev->i2c);
+  } else if (Dev->i2cSoft != nullptr){
+    status_int = VL53L0X_SoftWire_write_dword(deviceAddress, index, data, Dev->i2cSoft);
+  }
 
   if (status_int != 0)
     Status = VL53L0X_ERROR_CONTROL_INTERFACE;
@@ -208,14 +229,23 @@ VL53L0X_Error VL53L0X_UpdateByte(VL53L0X_DEV Dev, uint8_t index,
 
   deviceAddress = Dev->I2cDevAddr;
 
-  status_int = VL53L0X_read_byte(deviceAddress, index, &data, Dev->i2c);
+  if (Dev->i2c != nullptr){
+    status_int = VL53L0X_read_byte(deviceAddress, index, &data, Dev->i2c);
+  } else if (Dev->i2cSoft != nullptr){
+    status_int = VL53L0X_SoftWire_read_byte(deviceAddress, index, &data, Dev->i2cSoft);
+  }
 
   if (status_int != 0)
     Status = VL53L0X_ERROR_CONTROL_INTERFACE;
 
   if (Status == VL53L0X_ERROR_NONE) {
     data = (data & AndData) | OrData;
-    status_int = VL53L0X_write_byte(deviceAddress, index, data, Dev->i2c);
+
+    if (Dev->i2c != nullptr){
+        status_int = VL53L0X_write_byte(deviceAddress, index, data, Dev->i2c);
+    } else if (Dev->i2cSoft != nullptr){
+        status_int = VL53L0X_SoftWire_write_byte(deviceAddress, index, data, Dev->i2cSoft);
+    }
 
     if (status_int != 0)
       Status = VL53L0X_ERROR_CONTROL_INTERFACE;
@@ -231,7 +261,11 @@ VL53L0X_Error VL53L0X_RdByte(VL53L0X_DEV Dev, uint8_t index, uint8_t *data) {
 
   deviceAddress = Dev->I2cDevAddr;
 
-  status_int = VL53L0X_read_byte(deviceAddress, index, data, Dev->i2c);
+  if (Dev->i2c != nullptr){
+    status_int = VL53L0X_read_byte(deviceAddress, index, data, Dev->i2c);
+  } else if (Dev->i2cSoft != nullptr){
+    status_int = VL53L0X_SoftWire_read_byte(deviceAddress, index, data, Dev->i2cSoft);
+  }
 
   if (status_int != 0)
     Status = VL53L0X_ERROR_CONTROL_INTERFACE;
@@ -246,7 +280,11 @@ VL53L0X_Error VL53L0X_RdWord(VL53L0X_DEV Dev, uint8_t index, uint16_t *data) {
 
   deviceAddress = Dev->I2cDevAddr;
 
-  status_int = VL53L0X_read_word(deviceAddress, index, data, Dev->i2c);
+  if (Dev->i2c != nullptr){
+    status_int = VL53L0X_read_word(deviceAddress, index, data, Dev->i2c);
+  } else if (Dev->i2cSoft != nullptr){
+    status_int = VL53L0X_SoftWire_read_word(deviceAddress, index, data, Dev->i2cSoft);
+  }
 
   if (status_int != 0)
     Status = VL53L0X_ERROR_CONTROL_INTERFACE;
@@ -261,7 +299,11 @@ VL53L0X_Error VL53L0X_RdDWord(VL53L0X_DEV Dev, uint8_t index, uint32_t *data) {
 
   deviceAddress = Dev->I2cDevAddr;
 
-  status_int = VL53L0X_read_dword(deviceAddress, index, data, Dev->i2c);
+  if (Dev->i2c != nullptr){
+    status_int = VL53L0X_read_dword(deviceAddress, index, data, Dev->i2c);
+  } else if (Dev->i2cSoft != nullptr){
+    status_int = VL53L0X_SoftWire_read_dword(deviceAddress, index, data, Dev->i2cSoft);
+  }
 
   if (status_int != 0)
     Status = VL53L0X_ERROR_CONTROL_INTERFACE;

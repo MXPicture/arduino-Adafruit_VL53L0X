@@ -54,6 +54,16 @@ public:
     VL53L0X_Sense_config_t vl_config = VL53L0X_SENSE_DEFAULT);
   boolean setAddress(uint8_t newAddr);
 
+  virtual bool begin(
+    SoftI2C* i2c,
+    uint8_t i2c_addr = VL53L0X_I2C_ADDR,
+    boolean debug = false,
+    VL53L0X_Sense_config_t vl_config = VL53L0X_SENSE_DEFAULT) {
+
+    this->pMyDevice->i2cSoft = i2c;
+    return this->begin(i2c_addr, debug, nullptr, vl_config);
+  };
+
   // uint8_t getAddress(void); // not currently implemented
 
   /**************************************************************************/
